@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #0f172a; /* Slate 900 */
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+}
+
+/* --- FORCE HIDE NATIVE SCROLLBARS FOR SIMPLEBAR --- */
+
+/* 1. Hide scrollbar in Chrome, Safari and Edge */
+.custom-simplebar .simplebar-content-wrapper::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* 2. Hide scrollbar buttons/arrows specifically for Windows */
+.custom-simplebar .simplebar-content-wrapper::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* 3. Hide scrollbar in Firefox */
+.custom-simplebar .simplebar-content-wrapper {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+/* --- CUSTOMIZE SIMPLEBAR APPEARANCE --- */
+
+.custom-simplebar .simplebar-scrollbar::before {
+  background-color: #a855f7 !important; /* Purple-500 */
+  opacity: 0.5 !important;
+  border-radius: 10px;
+}
+
+.custom-simplebar .simplebar-scrollbar.simplebar-visible::before {
+  opacity: 0.9 !important;
+}
+
+.custom-simplebar .simplebar-track.simplebar-vertical {
+  width: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  margin-right: 4px;
+}
