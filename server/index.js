@@ -1,13 +1,33 @@
-import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import {GoogleGenerativeAI} from "@google/generative-ai";
+import dotenv from "dotenv";
+import path from "path";
+import {fileURLToPath} from "url";
+
+// Get the directory name of the current file (server/)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Force dotenv to look for .env in the current directory (server/.env)
+dotenv.config({path: path.join(__dirname, ".env")});
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+// Debug Log
+console.log(
+  "Loaded API Key:",
+  process.env.GEMINI_API_KEY
+    ? "Key exists (Success)"
+    : "Key is undefined (Fail)"
+);
+
+// Initialize Gemini
+const genAI = process.env.GEMINI_API_KEY
+  ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
+  : null;
 
 const FALLBACK_TEMPLATES = {
   en: {
@@ -74,7 +94,11 @@ app.post("/api/enhance", async (req, res) => {
   const isArabic = /[\u0600-\u06FF]/.test(idea);
 
   try {
-    const model = genAI.getGenerativeModel({model: "gemini-1.5-flash"});
+    if (!genAI) {
+      throw new Error("API Key missing");
+    }
+
+    const model = genAI.getGenerativeModel({model: "gemini-2.5-flash"});
     const prompt = `You are an expert website architect. Transform this website idea: "${idea}" into a professional, structured prompt. 
     Include: Value Proposition, Design Style, and UI Sections. 
     Constraint: The entire response must be written in ${
